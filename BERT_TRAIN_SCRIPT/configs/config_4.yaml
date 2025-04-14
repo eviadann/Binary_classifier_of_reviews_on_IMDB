@@ -1,0 +1,37 @@
+model:
+  model_name: "cointegrated/LaBSE-en-ru"
+  num_labels: 2
+  max_length: 512
+
+training:
+  output_dir: "./results"                # Директория для сохранения модели и других результатов
+  eval_strategy: "steps"                 # Выполнять оценку модели на основе шагов, а не эпох
+  save_strategy: "steps"                 # Сохранять модель на основе шагов, а не эпох
+  learning_rate: 0.000025                    # Скорость обучения модели (learning rate)
+  per_device_train_batch_size: 32        # Размер батча для обучения на каждом устройстве (GPU/CPU)
+  per_device_eval_batch_size: 32         # Размер батча для оценки на каждом устройстве (GPU/CPU)
+  num_train_epochs: 10                   # Общее количество эпох обучения (цикл по всем данным)
+  weight_decay: 0.00001                  # Коэффициент регуляризации весов для предотвращения переобучения
+  logging_dir: "./logs"                  # Директория для логов обучения, например, для TensorBoard
+  logging_steps: 50                      # Логирование каждые 50 шагов, чтобы отслеживать процесс обучения
+  load_best_model_at_end: true           # Загружать лучшую модель по метрике после завершения обучения
+  save_total_limit: 2                    # Сохранять не более двух последних лучших моделей
+  metric_for_best_model: "f1"            # Основная метрика, используемая для выбора лучшей модели (F1-score)
+  greater_is_better: true                # Выбирать лучшую модель, когда метрика выше (true) или ниже (false)
+  report_to: "tensorboard"               # Использовать TensorBoard для логирования данных обучения
+  optim: "adamw_torch"                   # Оптимизатор AdamW для обучения модели
+  warmup_steps: 100                      # Количество шагов для "разогрева" скорости обучения (warm-up)
+  eval_steps: 100         # Выполнять оценку модели каждые 500 шагов
+  save_steps: 100                        # Сохранять контрольные точки модели каждые 500 шагов
+  gradient_accumulation_steps: 2         # Накопление градиента каждые 2 шага для эффективного использования памяти
+
+
+data:
+  text_column: "text"
+  label_column: "label"
+
+callbacks:
+  es:                                 # Указываем колбэк EarlyStoppingCallback
+    early_stopping_patience: 10        # Параметр patience для ранней остановки
+#    early_stopping_threshold: 0.0    # Порог улучшения (threshold)
+
