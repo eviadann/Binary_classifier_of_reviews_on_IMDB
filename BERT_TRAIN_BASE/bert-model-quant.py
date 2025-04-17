@@ -30,9 +30,11 @@ openvino_model_path = "../model/model_openvino/model_openvino.xml"
 
 # %%
 # для проверки пайплайна
-dataset = load_dataset("imdb")
-train_df = pd.DataFrame(dataset['train']).sample(10000, random_state=42).reset_index(drop=True)
-test_df = pd.DataFrame(dataset['test']).sample(2000, random_state=42).reset_index(drop=True)
+# dataset = load_dataset("imdb")
+# train_df = pd.DataFrame(dataset['train']).sample(10000, random_state=42).reset_index(drop=True)
+# test_df = pd.DataFrame(dataset['test']).sample(2000, random_state=42).reset_index(drop=True)
+train_df = pd.read_csv('../datasets/train.csv', sep=';').reset_index(drop=True)
+test_df = pd.read_csv('../datasets/test.csv', sep=';').reset_index(drop=True)
 
 # %%
 class TextDataset(torch.utils.data.Dataset):
